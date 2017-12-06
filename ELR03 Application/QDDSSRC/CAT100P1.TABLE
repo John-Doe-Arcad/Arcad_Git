@@ -1,0 +1,48 @@
+000100170209-- Table Flux 10: Transport(Plateforme-Filiale)
+000101170117
+000102170209CREATE OR REPLACE TABLE cfaolib/cat100p1
+000144170213  (ct0codep   CHAR(20) NOT NULL WITH DEFAULT,
+000145170213   ct0codef   CHAR(20) NOT NULL WITH DEFAULT,
+000146170213   ct0valtra  CHAR(40) NOT NULL WITH DEFAULT,
+000147170213   ct0cout    CHAR(12) NOT NULL WITH DEFAULT,
+000148170213   ct0duree   CHAR(12) NOT NULL WITH DEFAULT,
+000149170213   ct0capcam  CHAR(12) NOT NULL WITH DEFAULT,
+000150170213   ct0unite   CHAR(10) NOT NULL WITH DEFAULT,
+000151170213   ct0devise  CHAR(10) NOT NULL WITH DEFAULT,
+000152170213   ct0tonnage CHAR(12) NOT NULL WITH DEFAULT,
+000153170213   ct0increm  CHAR(12) NOT NULL WITH DEFAULT,
+000154170213   ct0delai   CHAR(12) NOT NULL WITH DEFAULT,
+000155170213   ct0incert  CHAR(12) NOT NULL WITH DEFAULT
+000156170117   );
+000157170117
+000158170209LABEL ON TABLE cfaolib/cat100p1 is 'Flux10-Transport PFF';
+000159170117
+000160170209LABEL ON COLUMN cfaolib/cat100p1
+000174170209  (ct0codep   TEXT IS 'Code plateforme',
+000175170209   ct0codef   TEXT IS 'Code Filiale',
+000176170209   ct0valtra  TEXT IS 'Valeur Critère Transport',
+000177170209   ct0cout    TEXT IS 'Coût',
+000178170209   ct0duree   TEXT IS 'Durée',
+000179170209   ct0capcam  TEXT IS 'Capacité du Camion',
+000180170209   ct0unite   TEXT IS 'Unité',
+000181170209   ct0devise  TEXT IS 'Devise',
+000182170209   ct0tonnage TEXT IS 'Tonnage Maxi',
+000183170209   ct0increm  TEXT IS 'Incrément Capa Camion',
+000184170209   ct0delai   TEXT IS 'Délai de Mise à disposition',
+000185170209   ct0incert  TEXT IS 'Incertitude'
+000186170117  );
+000187170208
+000189170209LABEL ON COLUMN cfaolib/cat100p1
+000190170209  (ct0codep   IS 'Code plateforme',
+000191170209   ct0codef   IS 'Code Filiale',
+000192170209   ct0valtra  IS 'Valeur Critère Transport',
+000193170209   ct0cout    IS 'Coût',
+000194170209   ct0duree   IS 'Durée',
+000195170209   ct0capcam  IS 'Capacité du Camion',
+000196170209   ct0unite   IS 'Unité',
+000197170209   ct0devise  IS 'Devise',
+000198170209   ct0tonnage IS 'Tonnage Maxi',
+000199170209   ct0increm  IS 'Incrément Capa Camion',
+000200170209   ct0delai   IS 'Délai de Mise à disposition',
+000201170209   ct0incert  IS 'Incertitude'
+000202170209  );

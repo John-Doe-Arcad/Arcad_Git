@@ -1,0 +1,41 @@
+000100170223-- Table Flux 14: Réalisé de Stock Libre
+000101170223--                de la Plateforme
+000102170117
+000103170223CREATE OR REPLACE TABLE cfaolib/car140p1
+000153170223  (cr8dtexaa   CHAR(4)   NOT NULL WITH DEFAULT,
+000154170223   cr8dtexmm   CHAR(2)   NOT NULL WITH DEFAULT,
+000155170223   cr8dtexjj   CHAR(2)   NOT NULL WITH DEFAULT,
+000156170223   cr8Codplatf CHAR(20)  NOT NULL WITH DEFAULT,
+000157170223   cr8stcopa   CHAR(18)  NOT NULL WITH DEFAULT,
+000159170223   cr8stqtph   CHAR(12)  NOT NULL WITH DEFAULT,
+000165170223   cr8dtaa     CHAR(4)   NOT NULL WITH DEFAULT,
+000166170223   cr8dtmm     CHAR(2)   NOT NULL WITH DEFAULT,
+000167170223   cr8dtjj     CHAR(2)   NOT NULL WITH DEFAULT
+000169170117   );
+000170170117
+000171170223LABEL ON TABLE cfaolib/car140p1 is
+000172170223 'Flux14-Réalisés de Stock Libre de la Plateforme';
+000174170117
+000175170223LABEL ON COLUMN cfaolib/car140p1
+000176170224  (cr8dtexaa   TEXT IS 'Année d''extraction',
+000179170224   cr8dtexmm   TEXT IS 'Mois d''extraction',
+000180170224   cr8dtexjj   TEXT IS 'Jour d''extraction',
+000181170224   cr8Codplatf TEXT IS 'Code plateforme',
+000182170224   cr8stcopa   TEXT IS 'Réference produit',
+000189170224   cr8stqtph   TEXT IS 'Quantité',
+000190170224   cr8dtaa     TEXT IS 'Année de production',
+000191170224   cr8dtmm     TEXT IS 'Mois de production',
+000196170224   cr8dtjj     TEXT IS 'Jour de production'
+000198170117  );
+000199170222
+000200170224LABEL ON COLUMN cfaolib/car140p1
+000201170224  (cr8dtexaa   IS 'Année d''extraction',
+000202170224   cr8dtexmm   IS 'Mois d''extraction',
+000203170224   cr8dtexjj   IS 'Jour d''extraction',
+000204170224   cr8Codplatf IS 'Code plateforme',
+000205170224   cr8stcopa   IS 'Réference produit',
+000206170224   cr8stqtph   IS 'Quantité',
+000207170224   cr8dtaa     IS 'Année de production',
+000208170224   cr8dtmm     IS 'Mois de production',
+000209170224   cr8dtjj     IS 'Jour de production'
+000210170224  );

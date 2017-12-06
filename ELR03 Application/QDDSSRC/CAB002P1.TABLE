@@ -1,0 +1,75 @@
+000100170201-- Table Intermédiaire: Extraction des commandes clients
+000101170117
+000102170201CREATE OR REPLACE TABLE cfaolib/cab002p1
+000104170201  (cb2soci   CHAR(2) NOT NULL WITH DEFAULT,
+000127170201   cb2etab   CHAR(2) NOT NULL WITH DEFAULT,
+000128170201   cb2numi   DEC (10) NOT NULL WITH DEFAULT,
+000130170201   cb2copa   CHAR(8) NOT NULL WITH DEFAULT,
+000131170201   cb2typa   CHAR(1) NOT NULL WITH DEFAULT,
+000132170201   cb2dtsa   DEC (8) NOT NULL WITH DEFAULT,
+000133170201   cb2cfou   CHAR(8) NOT NULL WITH DEFAULT,
+000135170201   cb2refi   CHAR(35) NOT NULL WITH DEFAULT,
+000136170201   cb2desg   CHAR(35) NOT NULL WITH DEFAULT,
+000137170201   cb2qted   DEC (13, 3) NOT NULL WITH DEFAULT,
+000138170201   cb2ccqtex DEC (13, 3) NOT NULL WITH DEFAULT,
+000139170201   cb2ccqtfc DEC (13, 3) NOT NULL WITH DEFAULT,
+000140170201   cb2dtli   DEC(8) NOT NULL WITH DEFAULT,
+000141170206   cb2ccitem CHAR(4) NOT NULL WITH DEFAULT,
+000142170201   cb2ccnlig CHAR(4) NOT NULL WITH DEFAULT,
+000143170206   cb2qterec DEC(10, 2) NOT NULL WITH DEFAULT,
+000144170206   cb2azcopa CHAR(5) NOT NULL WITH DEFAULT,
+000145170302   cb2copab  CHAR(8) NOT NULL WITH DEFAULT,
+000146170302   cb2rsoc   CHAR(35) NOT NULL WITH DEFAULT,
+000147170201   cb2devp   CHAR(3) NOT NULL WITH DEFAULT,
+000154170201   cb2errlng CHAR(60) NOT NULL WITH DEFAULT
+000155170117   );
+000156170117
+000157170201LABEL ON TABLE cfaolib/cab002p1 is 'Extraction des Commandes Clients';
+000158170117
+000159170201LABEL ON COLUMN cfaolib/cab002p1
+000160170201 (cb2soci   TEXT IS 'Code sociéte',
+000180170201  cb2etab   TEXT IS 'Code établissement',
+000181170201  cb2numi   TEXT IS 'Numéro de commande',
+000182170206  cb2copa   TEXT IS 'Code partenaire',
+000183170201  cb2typa   TEXT IS 'Type partenaire',
+000184170201  cb2dtsa   TEXT IS 'Date de saisie',
+000185170201  cb2cfou   TEXT IS 'Code fournisseur',
+000186170201  cb2refi   TEXT IS 'Référence produit du fournisseur',
+000187170201  cb2desg   TEXT IS 'Description du produit',
+000188170201  cb2qted   TEXT IS 'Quantité demandée',
+000189170201  cb2ccqtex TEXT IS 'Quantité expediée',
+000190170201  cb2ccqtfc TEXT IS 'Quantité facturée',
+000191170201  cb2dtli   TEXT IS 'Date de livraison',
+000192170201  cb2ccitem TEXT IS 'N° item',
+000193170201  cb2ccnlig TEXT IS 'N° ligne',
+000194170206  cb2qterec TEXT IS 'Quantité réceptionnée',
+000195170201  cb2azcopa TEXT IS 'Code AZAP de la filiale',
+000196170302  cb2copab  TEXT IS 'Code partenaire',
+000197170302  cb2rsoc   TEXT IS 'Raison sociale',
+000198170201  cb2devp   TEXT IS 'Devise paiement',
+000206170201  cb2errlng TEXT IS 'Code Erreur'
+000207170117  );
+000208170117
+000209170206LABEL ON COLUMN cfaolib/cab002p1
+000210170206 (cb2soci   IS 'Code sociéte',
+000211170206  cb2etab   IS 'Code établissement',
+000212170206  cb2numi   IS 'Numéro de commande',
+000213170206  cb2copa   IS 'Code partenaire',
+000214170206  cb2typa   IS 'Type partenaire',
+000215170206  cb2dtsa   IS 'Date de saisie',
+000216170206  cb2cfou   IS 'Code fournisseur',
+000217170206  cb2refi   IS 'Référence produit du fournisseur',
+000218170206  cb2desg   IS 'Description du produit',
+000219170206  cb2qted   IS 'Quantité demandée',
+000220170206  cb2ccqtex IS 'Quantité expediée',
+000221170206  cb2ccqtfc IS 'Quantité facturée',
+000222170206  cb2dtli   IS 'Date de livraison',
+000223170206  cb2ccitem IS 'N° item',
+000224170206  cb2ccnlig IS 'N° ligne',
+000225170206  cb2qterec IS 'Quantité réceptionnée',
+000226170206  cb2azcopa IS 'Code AZAP de la filiale',
+000227170302  cb2copab  IS 'Code partenaire',
+000228170206  cb2rsoc   IS 'Raison sociale',
+000229170206  cb2devp   IS 'Devise paiement',
+000230170206  cb2errlng IS 'Code Erreur'
+000231170206  );

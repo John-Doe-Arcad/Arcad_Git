@@ -1,0 +1,71 @@
+000100170222-- Table Flux 13: Réalisé Transfert - réceptionné
+000101170222--                (Constructeur-->Filiale)
+000102170117
+000103170222CREATE OR REPLACE TABLE cfaolib/car135p1
+000144170222  (cr7xxxx    CHAR(20) NOT NULL WITH DEFAULT,
+000150170222   cr7yyyy    CHAR(20) NOT NULL WITH DEFAULT,
+000151170222   cr7refi    CHAR(18) NOT NULL WITH DEFAULT,
+000152170222   cr7qterec1 CHAR(12) NOT NULL WITH DEFAULT,
+000153170222   cr7dtcraa  CHAR(4)  NOT NULL WITH DEFAULT,
+000154170222   cr7dtcrmm  CHAR(2)  NOT NULL WITH DEFAULT,
+000155170222   cr7dtcrjj  CHAR(2)  NOT NULL WITH DEFAULT,
+000156170222   cr7typdep  CHAR(1)  NOT NULL WITH DEFAULT,
+000157170222   cr7dtli1aa CHAR(4)  NOT NULL WITH DEFAULT,
+000158170222   cr7dtli1mm CHAR(2)  NOT NULL WITH DEFAULT,
+000159170222   cr7dtli1jj CHAR(2)  NOT NULL WITH DEFAULT,
+000160170222   cr7typarr  CHAR(1)  NOT NULL WITH DEFAULT,
+000161170222   cr7qteind  CHAR(12) NOT NULL WITH DEFAULT,
+000162170222   cr7numi    CHAR(9)  NOT NULL WITH DEFAULT,
+000163170222   cr7statut  CHAR(1)  NOT NULL WITH DEFAULT,
+000164170222   cr7qterec2 CHAR(12) NOT NULL WITH DEFAULT,
+000165170222   cr7dtli2aa CHAR(4)  NOT NULL WITH DEFAULT,
+000166170222   cr7dtli2mm CHAR(2)  NOT NULL WITH DEFAULT,
+000167170222   cr7dtli2jj CHAR(2)  NOT NULL WITH DEFAULT
+000169170117   );
+000170170117
+000171170222LABEL ON TABLE cfaolib/car135p1 is
+000172170222  'Flux13-Transfert réceptionné Constr/Filiale)';
+000174170117
+000175170222LABEL ON COLUMN cfaolib/car135p1
+000176170222  (cr7xxxx     TEXT IS 'Site départ',
+000179170222   cr7yyyy     TEXT IS 'Site arrivée',
+000180170222   cr7refi     TEXT IS 'Code produit',
+000181170222   cr7qterec1  TEXT IS 'Quantité réceptionnée',
+000182170222   cr7dtcraa   TEXT IS 'Année de départ',
+000183170222   cr7dtcrmm   TEXT IS 'Mois de départ',
+000184170222   cr7dtcrjj   TEXT IS 'Jour de départ',
+000185170222   cr7typdep   TEXT IS 'Type départ',
+000186170222   cr7dtli1aa  TEXT IS 'Année arrivée',
+000187170222   cr7dtli1mm  TEXT IS 'Mois arrivée',
+000188170222   cr7dtli1jj  TEXT IS 'Jour arrivée',
+000189170222   cr7typarr   TEXT IS 'Type arrivée',
+000190170222   cr7qteind   TEXT IS 'Quantité indispensable',
+000191170222   cr7numi     TEXT IS 'Numéro de la commande',
+000192170222   cr7statut   TEXT IS 'Statut',
+000193170222   cr7qterec2  TEXT IS 'Quantité réceptionnée',
+000194170222   cr7dtli2aa  TEXT IS 'Année de réception',
+000195170222   cr7dtli2mm  TEXT IS 'Mois de réception',
+000196170222   cr7dtli2jj  TEXT IS 'Jour de réception'
+000198170117  );
+000199170222
+000200170222LABEL ON COLUMN cfaolib/car135p1
+000201170222  (cr7xxxx     IS 'Site départ',
+000202170222   cr7yyyy     IS 'Site arrivée',
+000203170222   cr7refi     IS 'Code produit',
+000204170222   cr7qterec1  IS 'Quantité réceptionnée',
+000205170222   cr7dtcraa   IS 'Année de départ',
+000206170222   cr7dtcrmm   IS 'Mois de départ',
+000207170222   cr7dtcrjj   IS 'Jour de départ',
+000208170222   cr7typdep   IS 'Type départ',
+000209170222   cr7dtli1aa  IS 'Année arrivée',
+000210170222   cr7dtli1mm  IS 'Mois arrivée',
+000211170222   cr7dtli1jj  IS 'Jour arrivée',
+000212170222   cr7typarr   IS 'Type arrivée',
+000213170222   cr7qteind   IS 'Quantité indispensable',
+000214170222   cr7numi     IS 'Numéro de la commande',
+000215170222   cr7statut   IS 'Statut',
+000216170222   cr7qterec2  IS 'Quantité réceptionnée',
+000217170222   cr7dtli2aa  IS 'Année de réception',
+000218170222   cr7dtli2mm  IS 'Mois de réception',
+000219170222   cr7dtli2jj  IS 'Jour de réception'
+000220170222  );

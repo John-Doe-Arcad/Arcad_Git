@@ -1,0 +1,59 @@
+000100170222-- Table Flux 13: Réalisé Transfert - non réceptionné
+000102170222--                (Plateforme--->Filiale)
+000103170117
+000104170216CREATE OR REPLACE TABLE cfaolib/car131p1
+000144170216  (cr3platef  CHAR(20) NOT NULL WITH DEFAULT,
+000150170216   cr3azcopa  CHAR(20) NOT NULL WITH DEFAULT,
+000151170216   cr3refi    CHAR(18) NOT NULL WITH DEFAULT,
+000152170216   cr3quant   CHAR(12) NOT NULL WITH DEFAULT,
+000153170216   cr3dtsaaa  CHAR(4)  NOT NULL WITH DEFAULT,
+000154170216   cr3dtsamm  CHAR(2)  NOT NULL WITH DEFAULT,
+000155170216   cr3dtsajj  CHAR(2)  NOT NULL WITH DEFAULT,
+000156170216   cr3typdep  CHAR(1)  NOT NULL WITH DEFAULT,
+000157170216   cr3dtliaa  CHAR(4)  NOT NULL WITH DEFAULT,
+000158170216   cr3dtlimm  CHAR(2)  NOT NULL WITH DEFAULT,
+000159170216   cr3dtlijj  CHAR(2)  NOT NULL WITH DEFAULT,
+000160170216   cr3typarr  CHAR(1)  NOT NULL WITH DEFAULT,
+000161170216   cr3qteind  CHAR(12) NOT NULL WITH DEFAULT,
+000162170216   cr3numi    CHAR(9)  NOT NULL WITH DEFAULT,
+000163170216   cr3statut  CHAR(2)  NOT NULL WITH DEFAULT
+000164170117   );
+000165170117
+000166170216LABEL ON TABLE cfaolib/car131p1 is
+000167170216       'Flux13-Transfert Plateforme--->Filiale)';
+000168170117
+000169170216LABEL ON COLUMN cfaolib/car131p1
+000174170216  (cr3platef  TEXT IS 'Site départ',
+000179170216   cr3azcopa  TEXT IS 'Site arrivée',
+000180170216   cr3refi    TEXT IS 'Code produit',
+000181170216   cr3quant   TEXT IS 'Quantité',
+000182170216   cr3dtsaaa  TEXT IS 'Année de départ',
+000183170216   cr3dtsamm  TEXT IS 'Mois de départ',
+000184170216   cr3dtsajj  TEXT IS 'Jour de départ',
+000185170216   cr3typdep  TEXT IS 'Type départ',
+000186170216   cr3dtliaa  TEXT IS 'Année arrivée',
+000187170216   cr3dtlimm  TEXT IS 'Mois arrivée',
+000188170216   cr3dtlijj  TEXT IS 'Jour arrivée',
+000189170216   cr3typarr  TEXT IS 'Type arrivée',
+000190170216   cr3qteind  TEXT IS 'Quantité indispensable',
+000191170216   cr3numi    TEXT IS 'Numéro de la commande',
+000192170216   cr3statut  TEXT IS 'Statut'
+000193170117  );
+000194170216
+000196170216LABEL ON COLUMN cfaolib/car131p1
+000197170216  (cr3platef  IS 'Site départ',
+000198170216   cr3azcopa  IS 'Site arrivée',
+000199170216   cr3refi    IS 'Code produit',
+000200170216   cr3quant   IS 'Quantité',
+000201170216   cr3dtsaaa  IS 'Année de départ',
+000202170216   cr3dtsamm  IS 'Mois de départ',
+000203170216   cr3dtsajj  IS 'Jour de départ',
+000204170216   cr3typdep  IS 'Type départ',
+000205170216   cr3dtliaa  IS 'Année arrivée',
+000206170216   cr3dtlimm  IS 'Mois arrivée',
+000207170216   cr3dtlijj  IS 'Jour arrivée',
+000208170216   cr3typarr  IS 'Type arrivée',
+000209170216   cr3qteind  IS 'Quantité indispensable',
+000210170216   cr3numi    IS 'Numéro de la commande',
+000211170216   cr3statut  IS 'Statut'
+000212170216  );

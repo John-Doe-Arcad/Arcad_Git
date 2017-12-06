@@ -1,0 +1,27 @@
+000100170209-- Table Flux 8 : Sites Plateformes
+000101170117
+000102170209CREATE OR REPLACE TABLE cfaolib/cas801p1
+000144170213  (cs8codep1 CHAR(20) NOT NULL WITH DEFAULT,
+000145170213   cs8codep2 CHAR(20) NOT NULL WITH DEFAULT,
+000146170213   cs8libep1 CHAR(40) NOT NULL WITH DEFAULT,
+000147170213   cs8libep2 CHAR(40) NOT NULL WITH DEFAULT,
+000151170213   cs8devp   CHAR(10) NOT NULL WITH DEFAULT
+000152170117   );
+000153170117
+000154170209LABEL ON TABLE cfaolib/cas801p1 is 'Flux8-Sites fournisseurs';
+000155170117
+000156170209LABEL ON COLUMN cfaolib/cas801p1
+000174170209  (cs8codep1 TEXT IS 'code plateforme',
+000175170209   cs8codep2 TEXT IS 'code plateforme',
+000176170209   cs8libep1 TEXT IS 'libellé plateforme',
+000177170209   cs8libep2 TEXT IS 'libellé plateforme',
+000178170209   cs8devp   TEXT IS 'Devise de paiement'
+000181170117  );
+000182170208
+000183170209LABEL ON COLUMN cfaolib/cas801p1
+000184170209  (cs8codep1 IS 'code plateforme',
+000185170209   cs8codep2 IS 'code plateforme',
+000186170209   cs8libep1 IS 'libellé plateforme',
+000187170209   cs8libep2 IS 'libellé plateforme',
+000188170209   cs8devp   IS 'Devise de paiement'
+000189170209  );

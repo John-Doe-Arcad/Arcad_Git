@@ -1,0 +1,113 @@
+000100170126 /*-----------------------------------------------------------------------*/
+000200170412 /*               Interfaces                                              */
+000300170126 /*-----------------------------------------------------------------------*/
+000400170216             PGM        PARM(&FOURNISS &UNITEACH &MOISACHAT +
+000500170216                          &MOISCLIENT &MOISRECEPT &CODPLATFRM +
+000600170216                          &LIBPLATFRM &DEVISE &CODTRONC &TRIGRAMM &DOSSIERIFS)
+000700170126
+000800170126             DCL        VAR(&FOURNISS) TYPE(*CHAR) LEN(30)
+000900170126             DCL        VAR(&UNITEACH) TYPE(*CHAR) LEN(30)
+001000170216             DCL        VAR(&MOISACHAT) TYPE(*CHAR) LEN(2)
+001100170216             DCL        VAR(&MOISCLIENT) TYPE(*CHAR) LEN(2)
+001200170216             DCL        VAR(&MOISRECEPT) TYPE(*CHAR) LEN(2)
+001300170216             DCL        VAR(&CODTRONC) TYPE(*CHAR) LEN(2)
+001400170209             DCL        VAR(&CODPLATFRM) TYPE(*CHAR) LEN(5)
+001500170209             DCL        VAR(&LIBPLATFRM) TYPE(*CHAR) LEN(30)
+001600170209             DCL        VAR(&DEVISE) TYPE(*CHAR) LEN(3)
+001700170209
+001800170126             DCL        VAR(&TRIGRAMM) TYPE(*CHAR) LEN(3)
+001900170207             DCL        VAR(&DOSSIERIFS) TYPE(*CHAR) LEN(20)
+002000170203             DCL        VAR(&DOSSIERENT) TYPE(*CHAR) LEN(7) +
+002100170203                          VALUE('ENTETE/')
+002200170412
+002300170412             /* This path must end with a slash  */
+002400170203
+002500170412             ADDLIBLE   LIB(FORCLIE)
+002600170131             MONMSG     MSGID(CPF2103)
+002700170130
+002800170412 /* Error Files */
+002900170126             CLRPFM     FILE(CAE001P1)
+003000170203
+003100170209 /*----------------------------------------------------*/
+003200170412 /*   Loading of intermediary bases                    */
+003300170209 /*----------------------------------------------------*/
+003400170412 /* Extraction of purchase orders                      */
+003500170203             CLRPFM     FILE(CAB001P1)
+003600170216             CALL       PGM(CAB001) PARM(&FOURNISS &UNITEACH &MOISACHAT)
+003700170210
+003800170412 /* Extraction of client orders                      */
+003900170210             CLRPFM     FILE(CAB002P1)
+004000170216             CALL       PGM(CAB002) PARM(&FOURNISS &MOISACHAT)
+004100170126
+004200170210 /*----------------------------------------------------*/
+004300170412 /*   Detail of product flows                          */
+004400170210 /*----------------------------------------------------*/
+004500170412 /* Flow1 - Products  */
+004600170203             CLRPFM     FILE(CAP100P1)
+004700170203             CALL       PGM(CAP100)
+004800170207
+004900170207             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+005000170412                          &DOSSIERENT *TCAT '1_PRODUITS.CSV')
+005100170207             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+005200170207                          DTAFMT(*TEXT) REPLACE(*YES)
+005300170207             CPYTOIMPF  FROMFILE(CAP100P1) TOSTMF(&CHEMIN2) +
+005400170207                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+005500170207                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+005600170207                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+005700170207                          DATFMT(*ISO) TIMFMT(*ISO)
+005800170126
+005900170412 /* Flow2 - Product criteria  */
+006000170131             CLRPFM     FILE(CAP200P1)
+006100170131             CALL       PGM(CAP200)
+006200170207
+006300170207             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+006400170412                          &DOSSIERENT *TCAT '2_CRITERES.CSV')
+006500170207             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+006600170412                          '2_CRITERES_' *TCAT &TRIGRAMM *TCAT +
+006700170207                          '.CSV')
+006800170207             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+006900170207                          DTAFMT(*TEXT) REPLACE(*YES)
+007000170207             CPYTOIMPF  FROMFILE(CAP200P1) TOSTMF(&CHEMIN2) +
+007100170207                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+007200170207                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+007300170207                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+007400170207                          DATFMT(*ISO) TIMFMT(*ISO)
+007500170209
+007600170210 /*----------------------------------------------------*/
+007700170412 /*   Detail of site flows                             */
+007800170210 /*----------------------------------------------------*/
+007900170412 /* Flow7 - branch sites    */
+008000170209             CLRPFM     FILE(CAS700P1)
+008100170209             CALL       PGM(CAS700)
+008200170209
+008300170209             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+008400170412                          &DOSSIERENT *TCAT '7_MAGASINS.CSV')
+008500170209             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+008600170412                          '7_MAGASINS_' *TCAT &TRIGRAMM *TCAT +
+008700170209                          '.CSV')
+008800170209             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+008900170209                          DTAFMT(*TEXT) REPLACE(*YES)
+009000170209             CPYTOIMPF  FROMFILE(CAS700P1) TOSTMF(&CHEMIN2) +
+009100170209                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+009200170209                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+009300170209                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+009400170209                          DATFMT(*ISO) TIMFMT(*ISO)
+009500170412
+009600170210 /*----------------------------------------------------*/
+009700170412 /*     Generation of the .csv for Errors              */
+009800170209 /*----------------------------------------------------*/
+009900170213             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+010000170412                          '1_ERREUR_' *TCAT &TRIGRAMM *TCAT +
+010100170213                          '.CSV')
+010200170213             CPYTOIMPF  FROMFILE(CAE001P1) TOSTMF(&CHEMIN2) +
+010300170213                          MBROPT(*REPLACE) STMFCCSID(1208) +
+010400170213                          RCDDLM(*CRLF) STRDLM(*NONE) +
+010500170213                          RMVBLANK(*BOTH) FLDDLM(';') +
+010600170213                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+010700170213                          DATFMT(*ISO) TIMFMT(*ISO)
+010800170131
+010900170131             RMVLIBLE   LIB(CFAOLIB)
+011000170131             RMVLIBLE   LIB(CFAOFILE)
+011100170131
+011200170209             ENDPGM
+011300170210 /*----------------------------------------------------*/

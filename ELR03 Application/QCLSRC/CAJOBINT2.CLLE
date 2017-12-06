@@ -1,0 +1,392 @@
+000100170126 /*-----------------------------------------------------------------------*/
+000200170126 /*             CFAO -  InterfaceS  CIL - AZAP                            */
+000300170126 /*-----------------------------------------------------------------------*/
+000400170216             PGM        PARM(&FOURNISS &UNITEACH &MOISACHAT +
+000500170216                          &MOISCLIENT &MOISRECEPT &CODPLATFRM +
+000600170216                          &LIBPLATFRM &DEVISE &CODTRONC &TRIGRAMM &DOSSIERIFS)
+000700170126
+000800170126             DCL        VAR(&FOURNISS) TYPE(*CHAR) LEN(30)
+000900170126             DCL        VAR(&UNITEACH) TYPE(*CHAR) LEN(30)
+001000170216             DCL        VAR(&MOISACHAT) TYPE(*CHAR) LEN(2)
+001100170216             DCL        VAR(&MOISCLIENT) TYPE(*CHAR) LEN(2)
+001200170216             DCL        VAR(&MOISRECEPT) TYPE(*CHAR) LEN(2)
+001300170216             DCL        VAR(&CODTRONC) TYPE(*CHAR) LEN(2)
+001400170209             DCL        VAR(&CODPLATFRM) TYPE(*CHAR) LEN(5)
+001500170209             DCL        VAR(&LIBPLATFRM) TYPE(*CHAR) LEN(30)
+001600170209             DCL        VAR(&DEVISE) TYPE(*CHAR) LEN(3)
+001700170209
+001800170126             DCL        VAR(&TRIGRAMM) TYPE(*CHAR) LEN(3)
+001900170207             DCL        VAR(&DOSSIERIFS) TYPE(*CHAR) LEN(20)
+002000170203             DCL        VAR(&DOSSIERENT) TYPE(*CHAR) LEN(7) +
+002100170203                          VALUE('ENTETE/')
+002200170216             DCL        VAR(&CHEMIN1) TYPE(*CHAR) LEN(60)
+002300170216             DCL        VAR(&CHEMIN2) TYPE(*CHAR) LEN(60)
+002400170131
+002500170203             /* Ce Chemin doit se terminer par un slash :  /HOME/FA/CFAO/ */
+002600170203
+002700170131             ADDLIBLE   LIB(CFAOLIB)
+002800170131             MONMSG     MSGID(CPF2103)
+002900170131             ADDLIBLE   LIB(CFAOFILE)
+003000170131             MONMSG     MSGID(CPF2103)
+003100170130
+003200170209 /* Fichiers des Erreurs */
+003300170126             CLRPFM     FILE(CAE001P1)
+003400170203
+003500170209 /*----------------------------------------------------*/
+003600170210 /*   Chargement des Bases Intermédiaires              */
+003700170209 /*----------------------------------------------------*/
+003800170210 /* Extraction des commandes Achats                    */
+003900170203             CLRPFM     FILE(CAB001P1)
+004000170216             CALL       PGM(CAB001) PARM(&FOURNISS &UNITEACH &MOISACHAT)
+004100170210
+004200170210 /* Extraction des commandes Clients                  */
+004300170210             CLRPFM     FILE(CAB002P1)
+004400170216             CALL       PGM(CAB002) PARM(&FOURNISS &MOISACHAT)
+004500170126
+004600170210 /*----------------------------------------------------*/
+004700170210 /*   Détail des Flux Produits                         */
+004800170210 /*----------------------------------------------------*/
+004900170126 /* Flux1 - Produits  */
+005000170203             CLRPFM     FILE(CAP100P1)
+005100170203             CALL       PGM(CAP100)
+005200170207
+005300170207             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+005400170207                          &DOSSIERENT *TCAT '1_AZAP_PRODUITS.CSV')
+005500170207             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+005600170207                          '1_AZAP_PRODUITS_' *TCAT &TRIGRAMM *TCAT +
+005700170207                          '.CSV')
+005800170207             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+005900170207                          DTAFMT(*TEXT) REPLACE(*YES)
+006000170207             CPYTOIMPF  FROMFILE(CAP100P1) TOSTMF(&CHEMIN2) +
+006100170207                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+006200170207                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+006300170207                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+006400170207                          DATFMT(*ISO) TIMFMT(*ISO)
+006500170126
+006600170131 /* Flux2 - Critères Produits  */
+006700170131             CLRPFM     FILE(CAP200P1)
+006800170131             CALL       PGM(CAP200)
+006900170207
+007000170207             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+007100170207                          &DOSSIERENT *TCAT '2_AZAP_CRITERES.CSV')
+007200170207             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+007300170207                          '2_AZAP_CRITERES_' *TCAT &TRIGRAMM *TCAT +
+007400170207                          '.CSV')
+007500170207             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+007600170207                          DTAFMT(*TEXT) REPLACE(*YES)
+007700170207             CPYTOIMPF  FROMFILE(CAP200P1) TOSTMF(&CHEMIN2) +
+007800170207                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+007900170207                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+008000170207                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+008100170207                          DATFMT(*ISO) TIMFMT(*ISO)
+008200170209
+008300170210 /*----------------------------------------------------*/
+008400170210 /*   Détail des Flux Sites                            */
+008500170210 /*----------------------------------------------------*/
+008600170209 /* Flux7 - Sites Filiales  */
+008700170209             CLRPFM     FILE(CAS700P1)
+008800170209             CALL       PGM(CAS700)
+008900170209
+009000170209             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+009100170209                          &DOSSIERENT *TCAT '7_AZAP_MAGASINS.CSV')
+009200170209             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+009300170209                          '7_AZAP_MAGASINS_' *TCAT &TRIGRAMM *TCAT +
+009400170209                          '.CSV')
+009500170209             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+009600170209                          DTAFMT(*TEXT) REPLACE(*YES)
+009700170209             CPYTOIMPF  FROMFILE(CAS700P1) TOSTMF(&CHEMIN2) +
+009800170209                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+009900170209                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+010000170209                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+010100170209                          DATFMT(*ISO) TIMFMT(*ISO)
+010200170130
+010300170209 /* Flux8 - Sites Fournisseurs */
+010400170209             CLRPFM     FILE(CAS800P1)
+010500170209             CALL       PGM(CAS800)
+010600170209
+010700170209             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+010800170209                          &DOSSIERENT *TCAT '8_AZAP_FOURNISSEURS.CSV')
+010900170209             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+011000170209                          '8_AZAP_FOURNISSEURS_' *TCAT &TRIGRAMM *TCAT +
+011100170209                          '.CSV')
+011200170209             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+011300170209                          DTAFMT(*TEXT) REPLACE(*YES)
+011400170209             CPYTOIMPF  FROMFILE(CAS800P1) TOSTMF(&CHEMIN2) +
+011500170209                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+011600170209                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+011700170209                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+011800170209                          DATFMT(*ISO) TIMFMT(*ISO)
+011900170209
+012000170209 /* Flux8 - Sites Plateformes  */
+012100170209             CLRPFM     FILE(CAS801P1)
+012200170209             CALL       PGM(CAS801) PARM(&CODPLATFRM &LIBPLATFRM +
+012300170209                          &DEVISE)
+012400170209
+012500170209             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+012600170209                          &DOSSIERENT *TCAT '8_AZAP_PLATEFORMES.CSV')
+012700170209             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+012800170209                          '8_AZAP_PLATEFORMES_' *TCAT &TRIGRAMM *TCAT +
+012900170209                          '.CSV')
+013000170209             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+013100170209                          DTAFMT(*TEXT) REPLACE(*YES)
+013200170209             CPYTOIMPF  FROMFILE(CAS801P1) TOSTMF(&CHEMIN2) +
+013300170209                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+013400170209                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+013500170209                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+013600170209                          DATFMT(*ISO) TIMFMT(*ISO)
+013700170210
+013800170210 /*----------------------------------------------------*/
+013900170210 /*   Détail des Flux Transport                        */
+014000170210 /*----------------------------------------------------*/
+014100170210 /* Flux10 - Flux Transports   */
+014200170210 /* Liaison site à site avec coût & délai PFF (Plateforme-Filiale) */
+014300170210             CLRPFM     FILE(CAT100P1)
+014400170210             CALL       PGM(CAT100)
+014500170210
+014600170210             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+014700170210                          &DOSSIERENT *TCAT '10_AZAP_LIAISONS_PFF.CSV')
+014800170210             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+014900170210                          '10_AZAP_LIAISONS_PFF_' *TCAT &TRIGRAMM *TCAT +
+015000170210                          '.CSV')
+015100170210             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+015200170210                          DTAFMT(*TEXT) REPLACE(*YES)
+015300170210             CPYTOIMPF  FROMFILE(CAT100P1) TOSTMF(&CHEMIN2) +
+015400170210                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+015500170210                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+015600170210                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+015700170210                          DATFMT(*ISO) TIMFMT(*ISO)
+015800170210
+015900170210 /* Flux10 */
+016000170210 /* Liaison site à site avec coût & délai CPF (Fournisseur-Plateforme) */
+016100170210             CLRPFM     FILE(CAT101P1)
+016200170210             CALL       PGM(CAT101)
+016300170210
+016400170210             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+016500170210                          &DOSSIERENT *TCAT '10_AZAP_LIAISONS_CPF.CSV')
+016600170210             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+016700170210                          '10_AZAP_LIAISONS_CPF_' *TCAT &TRIGRAMM *TCAT +
+016800170210                          '.CSV')
+016900170210             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+017000170210                          DTAFMT(*TEXT) REPLACE(*YES)
+017100170210             CPYTOIMPF  FROMFILE(CAT101P1) TOSTMF(&CHEMIN2) +
+017200170210                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+017300170210                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+017400170210                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+017500170210                          DATFMT(*ISO) TIMFMT(*ISO)
+017600170210
+017700170210 /* Flux10  */
+017800170210 /* Liaison site à site avec coût & délai CF (Fournisseur-Filiale) */
+017900170210             CLRPFM     FILE(CAT102P1)
+018000170210             CALL       PGM(CAT102) PARM(&DEVISE)
+018100170210
+018200170210             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+018300170210                          &DOSSIERENT *TCAT '10_AZAP_LIAISONS_CF.CSV')
+018400170210             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+018500170210                          '10_AZAP_LIAISONS_CF_' *TCAT &TRIGRAMM *TCAT +
+018600170210                          '.CSV')
+018700170210             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+018800170210                          DTAFMT(*TEXT) REPLACE(*YES)
+018900170210             CPYTOIMPF  FROMFILE(CAT102P1) TOSTMF(&CHEMIN2) +
+019000170210                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+019100170210                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+019200170210                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+019300170210                          DATFMT(*ISO) TIMFMT(*ISO)
+019400170210
+019500170213 /*----------------------------------------------------*/
+019600170213 /*   Détail des Flux Réalisés                         */
+019700170213 /*----------------------------------------------------*/
+019800170213 /* Flux12 - Réalisés de ventes CPS  */
+019900170221             CLRPFM     FILE(CAR120P1)
+020000170221             CALL       PGM(CAR120) PARM(&MOISCLIENT &CODPLATFRM +
+020100170221                          &CODTRONC)
+020200170213
+020300170221             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+020400170221                          &DOSSIERENT *TCAT '12_AZAP_VENTES_CPS.CSV')
+020500170221             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+020600170213                          '12_AZAP_VENTES_CPS_' *TCAT &TRIGRAMM *TCAT +
+020700170221                          '.CSV')
+020800170221             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+020900170221                          DTAFMT(*TEXT) REPLACE(*YES)
+021000170221             CPYTOIMPF  FROMFILE(CAR120P1) TOSTMF(&CHEMIN2) +
+021100170213                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+021200170213                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+021300170213                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+021400170221                          DATFMT(*ISO) TIMFMT(*ISO)
+021500170216
+021600170216 /*-------------------------------------------------------*/
+021700170216 /*   Détail des Réalisés de transfert (non réceptionné)  */
+021800170216 /*-------------------------------------------------------*/
+021900170216 /* Flux13 */
+022000170216 /* Réalisés de transfert constructeur ---> plateforme  */
+022100170216             CLRPFM     FILE(CAR130P1)
+022200170216             CALL       PGM(CAR130) PARM(&MOISRECEPT &CODPLATFRM)
+022300170216
+022400170216             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+022500170216                          &DOSSIERENT *TCAT +
+022600170216                          '13_AZAP_COMMANDES_ACHAT_CIL_CPF.CSV')
+022700170216             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+022800170216                          '13_AZAP_COMMANDES_ACHAT_CIL_CPF_' *TCAT +
+022900170216                          &TRIGRAMM *TCAT '.CSV')
+023000170216             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+023100170216                          DTAFMT(*TEXT) REPLACE(*YES)
+023200170216             CPYTOIMPF  FROMFILE(CAR130P1) TOSTMF(&CHEMIN2) +
+023300170216                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+023400170216                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+023500170216                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+023600170216                          DATFMT(*ISO) TIMFMT(*ISO)
+023700170216
+023800170216 /* Flux13 */
+023900170216 /* Réalisés de transfert plateforme ---> filiale  */
+024000170216             CLRPFM     FILE(CAR131P1)
+024100170216             CALL       PGM(CAR131) PARM(&MOISRECEPT &CODPLATFRM)
+024200170216
+024300170216             CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+024400170216                          &DOSSIERENT *TCAT +
+024500170216                          '13_AZAP_COMMANDES_ACHAT_CIL_PFF.CSV')
+024600170216             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+024700170216                          '13_AZAP_COMMANDES_ACHAT_CIL_PFF_' *TCAT +
+024800170216                          &TRIGRAMM *TCAT '.CSV')
+024900170216             CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+025000170216                          DTAFMT(*TEXT) REPLACE(*YES)
+025100170216             CPYTOIMPF  FROMFILE(CAR131P1) TOSTMF(&CHEMIN2) +
+025200170216                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+025300170216                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+025400170216                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+025500170216                          DATFMT(*ISO) TIMFMT(*ISO)
+025600170216
+025700170216 /* Flux13 */
+025800170216 /* Réalisés de transfert constructeur --> filiale  */
+025900170216       /*    CLRPFM     FILE(CAR132P1)  */
+026000170221       /*    CALL       PGM(CAR132) + Eventuels Paramètres  */
+026100170216
+026200170216       /*    CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+026300170216                          &DOSSIERENT *TCAT +
+026400170216                          '13_AZAP_COMMANDES_ACHAT_CIL_CF.CSV')  */
+026500170216       /*    CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+026600170216                          '13_AZAP_COMMANDES_ACHAT_CIL_CF_' *TCAT +
+026700170216                          &TRIGRAMM *TCAT '.CSV')  */
+026800170216       /*    CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+026900170216                          DTAFMT(*TEXT) REPLACE(*YES) */
+027000170216       /*    CPYTOIMPF  FROMFILE(CAR132P1) TOSTMF(&CHEMIN2) +
+027100170216                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+027200170216                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+027300170216                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+027400170216                          DATFMT(*ISO) TIMFMT(*ISO) */
+027500170216
+027600170221 /*-------------------------------------------------------*/
+027700170221 /*   Détail des Réalisés de transfert (réceptionné)      */
+027800170221 /*-------------------------------------------------------*/
+027900170221 /* Flux13 */
+028000170221 /* Réalisés de transfert constructeur ---> plateforme  */
+028100170221       /*    CLRPFM     FILE(CAR133P1)  */
+028200170221       /*    CALL       PGM(CAR133) + Eventuels Paramètres  */
+028300170221
+028400170221       /*    CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+028500170221                          &DOSSIERENT *TCAT +
+028600170221                          '13_AZAP_COMMANDES_ACHAT_RECEP_CIL_CPF.CSV') */
+028700170221       /*    CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+028800170221                          '13_AZAP_COMMANDES_ACHAT_RECEP_CIL_CPF_' +
+028900170221                          *TCAT &TRIGRAMM *TCAT '.CSV')  */
+029000170221       /*    CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+029100170221                          DTAFMT(*TEXT) REPLACE(*YES) */
+029200170221       /*    CPYTOIMPF  FROMFILE(CAR133P1) TOSTMF(&CHEMIN2) +
+029300170221                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+029400170221                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+029500170221                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+029600170221                          DATFMT(*ISO) TIMFMT(*ISO) */
+029700170221 /* Flux13 */
+029800170221 /* Réalisés de transfert plateforme ---> filiale  */
+029900170221       /*    CLRPFM     FILE(CAR134P1)  */
+030000170221       /*    CALL       PGM(CAR134) + Eventuels Paramètres  */
+030100170221
+030200170221       /*    CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+030300170221                          &DOSSIERENT *TCAT +
+030400170221                          '13_AZAP_COMMANDES_ACHAT_RECEP_CIL_PFF.CSV') */
+030500170221       /*    CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+030600170221                          '13_AZAP_COMMANDES_ACHAT_RECEP_CIL_PFF_' +
+030700170221                          *TCAT &TRIGRAMM *TCAT '.CSV')  */
+030800170221       /*    CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+030900170221                          DTAFMT(*TEXT) REPLACE(*YES) */
+031000170221       /*    CPYTOIMPF  FROMFILE(CAR134P1) TOSTMF(&CHEMIN2) +
+031100170221                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+031200170221                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+031300170221                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+031400170221                          DATFMT(*ISO) TIMFMT(*ISO) */
+031500170221 /* Flux13 */
+031600170221 /* Réalisés de transfert constructeur --> filiale  */
+031700170221       /*    CLRPFM     FILE(CAR135P1)  */
+031800170221       /*    CALL       PGM(CAR135) + Eventuels Paramètres  */
+031900170221
+032000170221       /*    CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+032100170221                          &DOSSIERENT *TCAT +
+032200170221                          '13_AZAP_COMMANDES_ACHAT_RECEP_CIL_CF.CSV') */
+032300170221       /*    CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+032400170221                          '13_AZAP_COMMANDES_ACHAT_RECEP_CIL_CF_' +
+032500170221                          *TCAT &TRIGRAMM *TCAT '.CSV')  */
+032600170221       /*    CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+032700170221                          DTAFMT(*TEXT) REPLACE(*YES) */
+032800170221       /*    CPYTOIMPF  FROMFILE(CAR135P1) TOSTMF(&CHEMIN2) +
+032900170221                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+033000170221                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+033100170221                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+033200170221                          DATFMT(*ISO) TIMFMT(*ISO) */
+033300170221
+033400170221 /*-------------------------------------------------------*/
+033500170221 /*   Réalisés de Stock Libre de la plateforme            */
+033600170221 /*-------------------------------------------------------*/
+033700170221 /* Flux14 */
+033800170221       /*    CLRPFM     FILE(CAR140P1)  */
+033900170221       /*    CALL       PGM(CAR140) + Eventuels Paramètres  */
+034000170221
+034100170221       /*    CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+034200170221                          &DOSSIERENT *TCAT '14_AZAP_STOCK_CIL_PF.CSV') */
+034300170221       /*    CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+034400170221                          '14_AZAP_STOCK_CIL_PF_' *TCAT &TRIGRAMM +
+034500170221                          *TCAT '.CSV')  */
+034600170221       /*    CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+034700170221                          DTAFMT(*TEXT) REPLACE(*YES) */
+034800170221       /*    CPYTOIMPF  FROMFILE(CAR140P1) TOSTMF(&CHEMIN2) +
+034900170221                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+035000170221                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+035100170221                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+035200170221                          DATFMT(*ISO) TIMFMT(*ISO) */
+035300170221
+035400170221 /*-------------------------------------------------------*/
+035500170221 /*   Stock Réservé                                       */
+035600170221 /*-------------------------------------------------------*/
+035700170221 /* Flux15 */
+035800170221       /*    CLRPFM     FILE(CAR150P1)  */
+035900170221       /*    CALL       PGM(CAR150) + Eventuels Paramètres  */
+036000170221
+036100170221       /*    CHGVAR     VAR(&CHEMIN1) VALUE(&DOSSIERIFS *TCAT +
+036200170221                          &DOSSIERENT *TCAT +
+036300170221                          '15_AZAP_STOCK_RESERVE.CSV')  */
+036400170221       /*    CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+036500170221                          '15_AZAP_STOCK_RESERVE_' *TCAT &TRIGRAMM +
+036600170221                          *TCAT '.CSV')  */
+036700170221       /*    CPY        OBJ(&CHEMIN1) TOOBJ(&CHEMIN2) TOCCSID(1208) +
+036800170221                          DTAFMT(*TEXT) REPLACE(*YES) */
+036900170221       /*    CPYTOIMPF  FROMFILE(CAR150P1) TOSTMF(&CHEMIN2) +
+037000170221                          STMFCODPAG(*STMF) RCDDLM(*CRLF) +
+037100170221                          STRDLM(*NONE) RMVBLANK(*BOTH) FLDDLM(';') +
+037200170221                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+037300170221                          DATFMT(*ISO) TIMFMT(*ISO) */
+037400170221
+037500170210 /*----------------------------------------------------*/
+037600170209 /*     Génération du .csv pour pour les Erreurs       */
+037700170209 /*----------------------------------------------------*/
+037800170213             CHGVAR     VAR(&CHEMIN2) VALUE(&DOSSIERIFS *TCAT +
+037900170213                          '1_AZAP_ERREUR_' *TCAT &TRIGRAMM *TCAT +
+038000170213                          '.CSV')
+038100170213             CPYTOIMPF  FROMFILE(CAE001P1) TOSTMF(&CHEMIN2) +
+038200170213                          MBROPT(*REPLACE) STMFCCSID(1208) +
+038300170213                          RCDDLM(*CRLF) STRDLM(*NONE) +
+038400170213                          RMVBLANK(*BOTH) FLDDLM(';') +
+038500170213                          NUMFLDPAD(*ZERO) DECPNT(*COMMA) +
+038600170213                          DATFMT(*ISO) TIMFMT(*ISO)
+038700170131
+038800170131             RMVLIBLE   LIB(CFAOLIB)
+038900170131             RMVLIBLE   LIB(CFAOFILE)
+039000170131
+039100170209             ENDPGM
+039200170210 /*----------------------------------------------------*/

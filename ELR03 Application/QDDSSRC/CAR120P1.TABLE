@@ -1,0 +1,33 @@
+000100170213-- Table Flux 12: Ventes CPS
+000101170117
+000102170213CREATE OR REPLACE TABLE cfaolib/car120p1
+000144170213  (cr1annvte   CHAR(4) NOT NULL WITH DEFAULT,
+000150170213   cr1moivte   CHAR(2) NOT NULL WITH DEFAULT,
+000151170213   cr1jouvte   CHAR(2) NOT NULL WITH DEFAULT,
+000152170214   cr1platef   CHAR(20) NOT NULL WITH DEFAULT,
+000153170213   cr1article  CHAR(18) NOT NULL WITH DEFAULT,
+000154170214   cr1quantit  CHAR(12) NOT NULL WITH DEFAULT,
+000155170214   cr1sitorig  CHAR(20) NOT NULL WITH DEFAULT
+000156170117   );
+000157170117
+000158170213LABEL ON TABLE cfaolib/car120p1 is 'Flux12-Ventes CPS';
+000159170117
+000160170213LABEL ON COLUMN cfaolib/car120p1
+000174170213  (cr1annvte   TEXT IS 'Année date de vente',
+000179170213   cr1moivte   TEXT IS 'Mois date de vente',
+000180170213   cr1jouvte   TEXT IS 'Jour date de vente',
+000181170214   cr1platef   TEXT IS 'Site livré',
+000182170213   cr1article  TEXT IS 'Code article constructeur',
+000183170214   cr1quantit  TEXT IS 'Quantité',
+000185170214   cr1sitorig  TEXT IS 'Site vente'
+000186170117  );
+000187170213
+000188170213LABEL ON COLUMN cfaolib/car120p1
+000189170213  (cr1annvte   IS 'Année date de vente',
+000190170213   cr1moivte   IS 'Mois date de vente',
+000191170213   cr1jouvte   IS 'Jour date de vente',
+000192170214   cr1platef   IS 'Site livré',
+000193170213   cr1article  IS 'Code article constructeur',
+000194170214   cr1quantit  IS 'Quantité',
+000195170214   cr1sitorig  IS 'Site vente'
+000196170213  );
